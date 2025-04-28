@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  equipmentliveupdate.api:
+    image: ${DOCKER_REGISTRY-}equipmentliveupdateapi
+    build:
+      context: .
+      dockerfile: EquipmentLiveUpdate.Api/Dockerfile
+
+  equipmentliveupdate.service:
+    image: ${DOCKER_REGISTRY-}equipmentliveupdateservice
+    build:
+      context: .
+      dockerfile: EquipmentLiveUpdate.Service/Dockerfile
+
+
+  equipmentliveupdate.eventhistory:
+    image: ${DOCKER_REGISTRY-}equipmentliveupdateeventhistory
+    build:
+      context: .
+      dockerfile: EquipmentLiveUpdate.EventHistory/Dockerfile
+
