@@ -3,7 +3,7 @@
 public class EquipmentState
 {
     public int Id { get; set; }
-
+    
     public int EquipmentId { get; set; }
 
     public EquipmentStatus Status { get; set; }
@@ -11,4 +11,6 @@ public class EquipmentState
     public DateTimeOffset UpdatedAt { get; set; }
 
     public int UpdatedBy { get; set; }
+
+    public Equipment Equipment { get; set; } = null!;
 }

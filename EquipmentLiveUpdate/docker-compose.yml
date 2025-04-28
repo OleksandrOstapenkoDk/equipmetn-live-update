@@ -32,11 +32,11 @@ services:
     build:
       context: .
       dockerfile: EquipmentLiveUpdate.Service/Dockerfile
-#
-#  equipmentliveupdate.eventhistory:
-#    image: ${DOCKER_REGISTRY-}equipmentliveupdateeventhistory
-#    depends_on:
-#      - db-init
-#    build:
-#      context: .
-#      dockerfile: EquipmentLiveUpdate.EventHistory/Dockerfile
+
+  equipmentliveupdate.eventhistory:
+    image: ${DOCKER_REGISTRY-}equipmentliveupdateeventhistory
+    depends_on:
+      - db-init
+    build:
+      context: .
+      dockerfile: EquipmentLiveUpdate.EventHistory/Dockerfile
