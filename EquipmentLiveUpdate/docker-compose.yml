@@ -1,22 +1,42 @@
-version: '3.4'
-
 services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-CU18-ubuntu-22.04
+    hostname: mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=S3Cur3Passw0rd
+    ports:
+      - 1433:1433
+    volumes:
+      - ./data/mssql/data:/var/opt/mssql/data
+
+  db-init:
+    image: mcr.microsoft.com/mssql-tools
+    volumes:
+      - ./init.sql:/init.sql
+    entrypoint: >
+      /bin/bash -c "sleep 60; /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P S3Cur3Passw0rd -d master -i /init.sql"
+
   equipmentliveupdate.api:
     image: ${DOCKER_REGISTRY-}equipmentliveupdateapi
+    depends_on:
+      - db-init
     build:
       context: .
       dockerfile: EquipmentLiveUpdate.Api/Dockerfile
 
   equipmentliveupdate.service:
     image: ${DOCKER_REGISTRY-}equipmentliveupdateservice
+    depends_on:
+     - db-init
     build:
       context: .
       dockerfile: EquipmentLiveUpdate.Service/Dockerfile
-
-
-  equipmentliveupdate.eventhistory:
-    image: ${DOCKER_REGISTRY-}equipmentliveupdateeventhistory
-    build:
-      context: .
-      dockerfile: EquipmentLiveUpdate.EventHistory/Dockerfile
-
+#
+#  equipmentliveupdate.eventhistory:
+#    image: ${DOCKER_REGISTRY-}equipmentliveupdateeventhistory
+#    depends_on:
+#      - db-init
+#    build:
+#      context: .
+#      dockerfile: EquipmentLiveUpdate.EventHistory/Dockerfile
