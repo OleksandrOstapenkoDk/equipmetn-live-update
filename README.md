@@ -35,7 +35,70 @@ Clone repository, open EquipmentLiveUpdate/EquipmentLiveUpdate.sln, set "docker-
   **Pending to implement:** logging, observability, unit tests, integration tests
 
 ## Suggested project architecture
+**High level diagram:**
+![alt text](https://github.com/OleksandrOstapenkoDk/equipmetn-live-update/blob/master/EquipmentStatusSystem.png) 
 
+### Microservices Breakdown
+**Equipment State Service**
 
+Event consumption, CRUD operations for equipment (add new machine, update state)
 
+**Equipment State History Service**
+
+Saves changes to equipment states database and exposes historical data
+
+**Equipment State Monitor Service**
+
+Provides real-time status overview 
+
+### Technologies
+**Frontend** 
+
+React.js or physical devices, like Raspberry Pi
+
+**Backend services**
+
+Latest .NET, EF Core, deployed to kubernetes cluster, Azure or AWS 
+
+**Database**
+
+MSSQL or PostgreSQL
+
+**Event Bus**
+
+Kafka, or AWS EventBridge
+
+**Real-time Updates**
+
+SignalR
+
+**Monitoring**
+
+Grafana
+
+### Physical Components
+**Factory Floor Devices** 
+
+Tablets for API calls or Raspberry Pi for automatic updates
+
+**Backend Infrastructure**
+
+Azure or AWS, Kubernetes cluster
+
+### Core Engineering Points
+**Event Driven Design:** 
+
+The system is based on events, sent to Event Bus, used for system decoupling and reliability increasing
+
+**Observability:** 
+
+Metrics, logs
+
+**Testing:**
+
+Unit Tests, Integration Tests, End-to-end Tests
+
+**Zero-downtime Deployments:** 
+
+Blue/Green or rolling deployments
 
