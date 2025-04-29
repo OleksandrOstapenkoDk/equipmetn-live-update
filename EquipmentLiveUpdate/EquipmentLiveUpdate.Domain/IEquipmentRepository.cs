@@ -3,6 +3,8 @@
 public interface IEquipmentRepository
 {
     public Task<IReadOnlyCollection<Equipment>> GetAllEquipment();
+    
+    public Task<IReadOnlyCollection<EquipmentState>> GetAllEquipmentStatuses();
 
     public Task<Equipment?> GetEquipmentById(int equipmentId);
 

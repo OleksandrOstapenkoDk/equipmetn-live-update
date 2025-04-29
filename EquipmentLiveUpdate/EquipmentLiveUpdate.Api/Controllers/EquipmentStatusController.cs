@@ -25,6 +25,13 @@ public class EquipmentStatusController(
         return Ok(allEquipment);
     }
 
+    [HttpGet("GetAllEquipmentStatuses")]
+    public async Task<IActionResult> GetAllEquipmentStatuses()
+    {
+        var allEquipmentStatuses = await equipmentRepository.GetAllEquipmentStatuses();
+        return Ok(allEquipmentStatuses);
+    }
+
     [HttpGet("GetEquipmentById")]
     public async Task<IActionResult> GetEquipmentById(int equipmentId)
     {

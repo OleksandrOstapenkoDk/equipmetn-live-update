@@ -1,8 +1,8 @@
-﻿using System.Collections.Immutable;
-using EquipmentLiveUpdate.Domain;
+﻿using EquipmentLiveUpdate.Domain;
 using EquipmentLiveUpdate.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
 using Equipment = EquipmentLiveUpdate.Domain.Equipment;
+using EquipmentState = EquipmentLiveUpdate.Domain.EquipmentState;
 using EquipmentStatus = EquipmentLiveUpdate.Domain.EquipmentStatus;
 
 namespace EquipmentLiveUpdate.Infrastructure;
@@ -13,6 +13,22 @@ public class EquipmentRepository(DatabaseContext dbContext) : IEquipmentReposito
     {
         var equipments = await dbContext.Equipments.ToListAsync();
         return equipments.Select(e => new Equipment(e.EquipmentId, e.Name, e.Description)).ToList();
+    }
+
+    public async Task<IReadOnlyCollection<EquipmentState>> GetAllEquipmentStatuses()
+    {
+        var equipmentStatuses = await dbContext.
+            EquipmentStates
+            .Include(es => es.Equipment)
+            .ToListAsync();
+
+        return equipmentStatuses.Select(es =>
+            new EquipmentState(
+                new Equipment(es.Equipment.EquipmentId, es.Equipment.Name, es.Equipment.Description),
+                (EquipmentStatus)es.Status,
+                es.UpdatedAt,
+                es.UpdatedBy))
+            .ToList();
     }
 
     public async Task<Equipment?> GetEquipmentById(int equipmentId)
