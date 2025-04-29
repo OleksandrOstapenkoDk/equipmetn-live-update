@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EquipmentLiveUpdate.EventHistory": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
