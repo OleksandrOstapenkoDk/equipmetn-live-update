@@ -28,8 +28,14 @@ Clone repository, open EquipmentLiveUpdate/EquipmentLiveUpdate.sln, set "docker-
   
   **EquipmentLiveUpdate.Contracts**
   
-  Message contract, shared beetween API, Service and EventHistory
+  Message contract, shared between API, Service and EventHistory
 
-  **Database connection**: MSSQL server: localhost, user: sa, password: S3Cur3Passw0rd (Yes, sharing in readme:) )
+  **Database connection:** MSSQL server: localhost, user: sa, password: S3Cur3Passw0rd (Yes, sharing in readme:) )
 
-  **Pending to implement** logging, observability, unit tests, integration tests
+  **Pending to implement:** logging, observability, unit tests, integration tests
+
+## Suggested project architecture
+
+
+
+
