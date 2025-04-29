@@ -6,6 +6,7 @@ public class DatabaseContext : DbContext
 {
     internal virtual DbSet<Equipment> Equipments { get; set; } = null!;
     internal virtual DbSet<EquipmentState> EquipmentStates { get; set; } = null!;
+    internal virtual DbSet<EquipmentStateHistory> EquipmentStateHistory { get; set; } = null!;
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options)
         : base(options)
@@ -16,7 +17,8 @@ public class DatabaseContext : DbContext
     {
         CreateEquipmentStates(modelBuilder);
         CreateEquipments(modelBuilder);
-        
+        CreateEquipmentStateHistory(modelBuilder);
+
         var equipment1 = new Equipment { EquipmentId = 1, Name = "Brick machine 1", Description = "Machine to make good bricks" };
         var equipment2 = new Equipment { EquipmentId = 2, Name = "Brick machine 2", Description = "Machine to make vary good bricks" };
         var equipment3 = new Equipment { EquipmentId = 3, Name = "Brick machine 3", Description = "Machine to make the best bricks ever" };
@@ -61,6 +63,28 @@ public class DatabaseContext : DbContext
         );
     }
 
+    private static void CreateEquipmentStateHistory(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<EquipmentStateHistory>(entity =>
+        {
+            entity.ToTable("EquipmentStateHistory");
+
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.EquipmentId);
+
+            entity.Property(e => e.Status);
+            
+            entity.Property(e => e.UpdatedAt);
+
+            entity.Property(e => e.UpdatedBy);
+
+            entity.HasOne(s => s.Equipment)
+                .WithMany()
+                .HasForeignKey(cc => cc.EquipmentId);
+
+        });
+    }
     private static void CreateEquipmentStates(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<EquipmentState>(entity =>

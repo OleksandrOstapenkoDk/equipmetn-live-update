@@ -9,4 +9,8 @@ public interface IEquipmentRepository
     public Task<Equipment?> GetEquipmentById(int equipmentId);
 
     public Task<bool> SetEquipmentStatus(int equipmentId, EquipmentStatus status, DateTimeOffset timestamp, int userId);
+
+    public Task SaveEquipmentStatusHistory(int equipmentId, EquipmentStatus status, DateTimeOffset timestamp, int userId);
+
+    public Task<IReadOnlyCollection<EquipmentState>> GetEquipmentStatusHistoryForEquipment(int equipmentId);
 }

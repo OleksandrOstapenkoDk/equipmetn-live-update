@@ -38,6 +38,41 @@ public class EquipmentRepository(DatabaseContext dbContext) : IEquipmentReposito
         return equipment != null ? new Equipment(equipment.EquipmentId, equipment.Name, equipment.Description) : null;
     }
 
+    public async Task SaveEquipmentStatusHistory(
+        int equipmentId, 
+        EquipmentStatus status,
+        DateTimeOffset timestamp,
+        int userId)
+    {
+        var equipmentState = new Model.EquipmentStateHistory()
+        {
+            EquipmentId = equipmentId,
+            Status = (Model.EquipmentStatus)status,
+            UpdatedBy = userId,
+            UpdatedAt = timestamp,
+        };
+
+        dbContext.EquipmentStateHistory.Add(equipmentState);
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task<IReadOnlyCollection<EquipmentState>> GetEquipmentStatusHistoryForEquipment(int equipmentId)
+    {
+        var equipmentStatusHistory = await dbContext.
+            EquipmentStateHistory
+            .Where(e => e.EquipmentId == equipmentId)
+            .Include(es => es.Equipment)
+            .ToListAsync();
+
+        return equipmentStatusHistory.Select(es =>
+                new EquipmentState(
+                    new Equipment(es.Equipment.EquipmentId, es.Equipment.Name, es.Equipment.Description),
+                    (EquipmentStatus)es.Status,
+                    es.UpdatedAt,
+                    es.UpdatedBy))
+            .ToList();
+    }
+
     public async Task<bool> SetEquipmentStatus(int equipmentId, EquipmentStatus status, DateTimeOffset timestamp, int userId)
     {
         var equipmentStatus = await dbContext.EquipmentStates.FirstOrDefaultAsync(es => es.EquipmentId == equipmentId);

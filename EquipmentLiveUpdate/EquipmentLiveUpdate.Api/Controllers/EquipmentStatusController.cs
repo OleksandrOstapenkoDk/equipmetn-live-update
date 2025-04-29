@@ -32,6 +32,13 @@ public class EquipmentStatusController(
         return Ok(allEquipmentStatuses);
     }
 
+    [HttpGet("GetHistoryByEquipmentId")]
+    public async Task<IActionResult> GetHistoryByEquipmentId(int equipmentId)
+    {
+        var allEquipmentStatuses = await equipmentRepository.GetEquipmentStatusHistoryForEquipment(equipmentId);
+        return Ok(allEquipmentStatuses);
+    }
+
     [HttpGet("GetEquipmentById")]
     public async Task<IActionResult> GetEquipmentById(int equipmentId)
     {
