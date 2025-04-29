@@ -17,6 +17,17 @@ services:
     entrypoint: >
       /bin/bash -c "sleep 60; /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P S3Cur3Passw0rd -d master -i /init.sql"
 
+  rabbitMQ:
+      image: rabbitmq:3.8-management
+      restart: always
+      hostname: rabbitMQ
+      ports:
+          - "7000:15672"
+          - "5672:5672"
+      environment:
+          - RABBITMQ_DEFAULT_USER=admin
+          - RABBITMQ_DEFAULT_PASS=password
+
   equipmentliveupdate.api:
     image: ${DOCKER_REGISTRY-}equipmentliveupdateapi
     depends_on:
